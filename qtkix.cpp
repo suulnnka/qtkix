@@ -15,7 +15,7 @@ qtkix::qtkix(QWidget *parent) :
 	can_move = true;
 
 	ui->spinBox->setValue(10);
-	ui->spinBox_2->setValue(16);
+	ui->spinBox_2->setValue(14);
 	ui->state->setText("");
 
 	ui->label->setAttribute(Qt::WA_PaintOnScreen);
