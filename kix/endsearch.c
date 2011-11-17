@@ -21,7 +21,7 @@ int8 end_pvs(uint8 deep,uint64 my,uint64 opp,int8 alpha,int8 beta){
 	}
 	//first node
 	m = move_list & (-move_list);
-	flipped = (*flip[bit_to_x(m)])(my,opp) ;
+	flipped = flip_slow(my,opp,m) ;
 	move_list = move_list ^ m;
 	best_score = -end_pvs(deep-1,opp^flipped,my|flipped|m,-beta,-alpha);
 	//other nodes
@@ -32,7 +32,7 @@ int8 end_pvs(uint8 deep,uint64 my,uint64 opp,int8 alpha,int8 beta){
 			alpha = best_score;
 
 		m = move_list & (-move_list);
-		flipped = (*flip[bit_to_x(m)])(my,opp) ;
+		flipped = flip_slow(my,opp,m) ;
 		move_list = move_list ^m;
 
 		score = -end_alpha_beta(deep-1,opp^flipped,my|flipped|m,-alpha-1,-alpha);
@@ -63,7 +63,7 @@ int8 end_alpha_beta(uint8 deep,uint64 my,uint64 opp,int8 alpha,int8 beta){
 	while(move_list != 0ull){
 
 		m = move_list & (-move_list);
-		flipped = (*flip[bit_to_x(m)])(my,opp) ;
+		flipped = flip_slow(my,opp,m) ;
 		move_list = move_list ^m;
 
 		score = -end_alpha_beta(deep-1,opp^flipped,my|flipped|m,-beta,-alpha);
@@ -90,13 +90,13 @@ uint8 end_search(uint8 deep,uint64 my,uint64 opp,int8 *v){
 	//first node
 	m = move_list & (-move_list) ;
 	best_move = bit_to_x(m);
-	flipped = (*flip[bit_to_x(m)])(my,opp) ;
+	flipped = flip_slow(my,opp,m) ;
 	move_list = move_list ^ m;
 	best_score = -end_pvs(deep-1,opp^flipped,my|flipped|m,-65,65);
 	//left nodes
 	while(move_list != 0ull){ //需要节点排序
 		m = move_list & (-move_list);
-		flipped = (*flip[bit_to_x(m)])(my,opp) ;
+		flipped = flip_slow(my,opp,m) ;
 		move_list = move_list ^ m ;
 		score = -end_alpha_beta(deep-1,opp^flipped,my|flipped|m,-best_score-1,-best_score);
 		if(score > best_score){
